@@ -40,7 +40,7 @@ def main():
 
     template = env.get_template("template.html")
     rendered_page = template.render(
-        how_longer=f"Уже {how_long} {year(how_long)} с нами",
+        how_long=f"Уже {how_long} {year(how_long)} с нами",
         white_wine=wine_dict["Белые вина"],
         red_wine=wine_dict["Красные вина"],
         drinks=wine_dict["Напитки"]
