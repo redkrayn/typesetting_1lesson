@@ -1,6 +1,6 @@
 import datetime
 import pandas
-import collections
+from collections import defaultdict
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
@@ -24,14 +24,11 @@ def main():
     excel_data_wine = pandas.read_excel("wine.xlsx", na_values=['N/A', 'NA'], keep_default_na=False)
     wines = excel_data_wine.to_dict(orient="records")
 
-    wine_dict = collections.defaultdict(list)
+    wine_dict = defaultdict(list)
     for wine in wines:
-        if wine.get("Категория") == "Белые вина":
-            wine_dict["Белые вина"].append(wine)
-        if wine.get("Категория") == "Красные вина":
-            wine_dict["Красные вина"].append(wine)
-        if wine.get("Категория") == "Напитки":
-            wine_dict["Напитки"].append(wine)
+        wine.get("Категория") == "Белые вина" and wine_dict["Белые вина"].append(wine)
+        wine.get("Категория") == "Красные вина" and wine_dict["Красные вина"].append(wine)
+        wine.get("Категория") == "Напитки" and wine_dict["Напитки"].append(wine)
 
     env = Environment(
         loader=FileSystemLoader('.'),
@@ -50,6 +47,7 @@ def main():
         file.write(rendered_page)
     server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
     server.serve_forever()
+
 
 if __name__ == "__main__":
     main()
